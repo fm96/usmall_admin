@@ -5,6 +5,7 @@ import qs from 'qs'
 axios.interceptors.response.use(res => {
   console.group('此次请求的地址是：' + res.config.url);
   console.log(res);
+  console.groupEnd();
   return res;
 })
 
@@ -178,9 +179,9 @@ export const sortInfo = (params) => {
 }
 // 商品分类修改
 export const sortUpdate = (params) => {
-  var form=new FormData();
-  for(let i in params){
-    form.append(i,params[i])
+  var form = new FormData();
+  for (let i in params) {
+    form.append(i, params[i])
   }
   return axios({
     url: baseUrl + '/api/cateedit',
@@ -199,122 +200,219 @@ export const sortDel = (params) => {
 
 // 添加规格属性
 export const specAdd = (params) => {
-    return axios({
-      url: baseUrl + '/api/specsadd',
-      method: 'post',
-      data: qs.stringify(params)
-    })
-  }
+  return axios({
+    url: baseUrl + '/api/specsadd',
+    method: 'post',
+    data: qs.stringify(params)
+  })
+}
 //   获取商品规格列表
 export const specList = (params) => {
-    return axios({
-      url: baseUrl + '/api/specslist',
-      method: 'get',
-      params
-    })
-  }
+  return axios({
+    url: baseUrl + '/api/specslist',
+    method: 'get',
+    params
+  })
+}
 //   获取商品规格总数
-export const specCount = (params) => {
-    return axios({
-      url: baseUrl + '/api/specscount',
-      method: 'get',
-      params
-    })
-  }
+export const specCount = () => {
+  return axios({
+    url: baseUrl + '/api/specscount',
+    method: 'get'
+  })
+}
 // 获取商品规格一条
 export const specInfo = (params) => {
-    return axios({
-      url: baseUrl + '/api/specsinfo',
-      method: 'get',
-      params
-    })
-  }
+  return axios({
+    url: baseUrl + '/api/specsinfo',
+    method: 'get',
+    params
+  })
+}
 //   商品规格修改
 export const specUpdate = (params) => {
-    return axios({
-      url: baseUrl + '/api/specsedit',
-      method: 'post',
-      data: qs.stringify(params)
-    })
-  }
+  return axios({
+    url: baseUrl + '/api/specsedit',
+    method: 'post',
+    data: qs.stringify(params)
+  })
+}
 //   商品规格删除
 export const specDel = (params) => {
-    return axios({
-      url: baseUrl + '/api/specsdelete',
-      method: 'post',
-      data: qs.stringify(params)
-    })
-  }
+  return axios({
+    url: baseUrl + '/api/specsdelete',
+    method: 'post',
+    data: qs.stringify(params)
+  })
+}
 
-  // 会员列表
-  export const memberList=()=>{
-    return axios({
-      url:baseUrl+'/api/memberlist',
-      method:'get'
-    })
-  }
-  // 获取会员中的一条信息
-  export const memberInfo=(params)=>{
-    return axios({
-      url:baseUrl+'/api/memberinfo',
-      method:'get',
-      params
-    })
-  }
-  // 会员修改
-  export const memberUpdate=(params)=>{
-    return axios({
-      url:baseUrl+'/api/memberedit',
-      method:'post',
-      data:qs.stringify(params)
-    })
-  }
 
-  // 轮播图添加
-  export const bannerAdd=(params)=>{
-    let form =new FormData();
-    for(let i in params){
-      form.append(i,params[i])
-    }
-    return axios({
-      url:baseUrl+'/api/banneradd',
-      method:'post',
-      data:form
-    })
+// 添加商品
+export const goodsAdd = (params) => {
+  let form=new FormData();
+  for(let i in params){
+    form.append(i,params[i])
   }
+  return axios({
+    url: baseUrl + '/api/goodsadd',
+    method: 'post',
+    data: form
+  })
+}
+//   获取商品列表
+export const goodsList = (params) => {
+  return axios({
+    url: baseUrl + '/api/goodslist',
+    method: 'get',
+    params
+  })
+}
+//   获取商品总数
+export const goodsCount = () => {
+  return axios({
+    url: baseUrl + '/api/goodscount',
+    method: 'get'
+  })
+}
+// 获取商品信息一条
+export const goodsInfo = (params) => {
+  return axios({
+    url: baseUrl + '/api/goodsinfo',
+    method: 'get',
+    params
+  })
+}
+//   商品修改
+export const goodsUpdate = (params) => {
+  let form=new FormData();
+  for(let i in params){
+    form.append(i,params[i])
+  }
+  return axios({
+    url: baseUrl + '/api/goodsedit',
+    method: 'post',
+    data: form
+  })
+}
+//   商品删除
+export const goodsDel = (params) => {
+  return axios({
+    url: baseUrl + '/api/goodsdelete',
+    method: 'post',
+    data: qs.stringify(params)
+  })
+}
 
-  // 获取轮播图列表
-  export const bannerList=()=>{
-    return axios({
-      url:baseUrl+'/api/bannerlist',
-      method:'get'
-    })
+// 会员列表
+export const memberList = () => {
+  return axios({
+    url: baseUrl + '/api/memberlist',
+    method: 'get'
+  })
+}
+// 获取会员中的一条信息
+export const memberInfo = (params) => {
+  return axios({
+    url: baseUrl + '/api/memberinfo',
+    method: 'get',
+    params
+  })
+}
+// 会员修改
+export const memberUpdate = (params) => {
+  return axios({
+    url: baseUrl + '/api/memberedit',
+    method: 'post',
+    data: qs.stringify(params)
+  })
+}
+
+// 轮播图添加
+export const bannerAdd = (params) => {
+  let form = new FormData();
+  for (let i in params) {
+    form.append(i, params[i])
   }
-  // 获取轮播图列表中的一条信息
-  export const bannerInfo=(params)=>{
-    return axios({
-      url:baseUrl+'/api/bannerinfo',
-      method:'get',
-      params
-    })
+  return axios({
+    url: baseUrl + '/api/banneradd',
+    method: 'post',
+    data: form
+  })
+}
+
+// 获取轮播图列表
+export const bannerList = () => {
+  return axios({
+    url: baseUrl + '/api/bannerlist',
+    method: 'get'
+  })
+}
+// 获取轮播图列表中的一条信息
+export const bannerInfo = (params) => {
+  return axios({
+    url: baseUrl + '/api/bannerinfo',
+    method: 'get',
+    params
+  })
+}
+// 轮播图修改
+export const bannerUpdate = (params) => {
+  let form = new FormData();
+  for (let i in params) {
+    form.append(i, params[i])
   }
-  // 轮播图修改
-  export const bannerUpdate=(params)=>{
-    let form=new FormData();
-    for(let i in params){
-      form.append(i,params[i])
-    }
-    return axios({
-      url:baseUrl+'/api/banneredit',
-      method:'post',
-      data:form
-    })
-  }
-  // 轮播图删除
-  export const bannerDel=(params)=>{
-    return axios({
-      url:baseUrl+'/api/bannerdelete',
-      method:'post',
-      data:qs.stringify(params)
-    })
-  }
+  return axios({
+    url: baseUrl + '/api/banneredit',
+    method: 'post',
+    data: form
+  })
+}
+// 轮播图删除
+export const bannerDel = (params) => {
+  return axios({
+    url: baseUrl + '/api/bannerdelete',
+    method: 'post',
+    data: qs.stringify(params)
+  })
+}
+
+//限时秒杀添加
+export const seckillAdd=(params)=>{
+  return axios({
+    url:baseUrl+'/api/seckadd',
+    method:'post',
+    data:params
+  })
+}
+
+// 限时秒杀列表
+export const seckillList=()=>{
+  return axios({
+    url:baseUrl+'/api/secklist',
+    method:'get'
+  })
+}
+// 获取限时秒杀列表中的一条
+export const seckillInfo=(params)=>{
+  return axios({
+    url:baseUrl+'/api/seckinfo',
+    method:'get',
+    params
+  })
+}
+// 限时秒杀修改
+export const seckillUpdate=(params)=>{
+  return axios({
+    url:baseUrl+'/api/seckedit',
+    method:'post',
+    data:params
+  })
+}
+// 限时秒杀删除
+export const seckillDel=(params)=>{
+  return axios({
+    url:baseUrl+'/api/seckdelete',
+    method:'post',
+    data:qs.stringify(params)
+  })
+}

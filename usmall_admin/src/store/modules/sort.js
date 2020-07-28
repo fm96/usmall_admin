@@ -12,7 +12,7 @@ import {
   }
   
   export const actions = {
-      // 角色列表
+      // 商品分类列表
     resquestList(context) {
         sortList({istree:true}).then(res => {
         context.commit('changeSortList',res.data.list)

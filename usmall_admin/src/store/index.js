@@ -12,6 +12,8 @@ import admin from './modules/admin'
 import sort from './modules/sort'
 import spec from './modules/spec'
 import member from './modules/member'
+import banner from './modules/banner'
+import seckill from './modules/seckill'
 
 
 // 创建一个仓库
@@ -26,6 +28,8 @@ export default new Vuex.Store({
         admin,
         sort,
         spec,
-        member
+        member,
+        banner,
+        seckill
     }
 })

@@ -29,11 +29,17 @@ export const mutations = {
 
 export const actions = {
   // 商品规格列表
-  resquestList(context) {
-    const params = {
-      size: context.state.size,
-      page: context.state.page
-    };
+  //调用这个action,如果要分页，就不用传参；如果要取所有的数据，就传递一个true
+  resquestList(context, bool) {
+    let params = {}
+    if (bool) {
+      params = {}
+    } else {
+      params = {
+        size: context.state.size,
+        page: context.state.page
+      };
+    }
 
     specList(params).then(res => {
       if (res.data.list.length == 0 && context.state.page > 0) {

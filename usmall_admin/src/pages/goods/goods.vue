@@ -1,15 +1,36 @@
 <template>
 <div>
-    goods
+    <!-- 添加按钮 -->
+    <el-button type="primary" @click="add">添 加</el-button>
+    <!-- 添加弹框 -->
+    <v-add :info='info'></v-add>
+    <!-- 列表 -->
+    <!-- <v-list></v-list> -->
 </div>
 </template>
 <script>
+import vAdd from './components/add'
+import vList from './components/list'
 export default {
- components: {},
+ components: {
+     vAdd,
+     vList
+ },
 data(){
-return {}
+return {
+    info:{
+            show:false,
+            title:'添加商品',
+            isAdd:true
+        }
+}
 },
-methods: {},
+methods: {
+    // 添加
+    add(){
+        this.info.show=true
+    }
+},
 mounted(){}
 }
 </script>

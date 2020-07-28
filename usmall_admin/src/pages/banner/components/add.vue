@@ -1,11 +1,10 @@
 <template>
-<div class="add">
+  <div class="add">
     <el-dialog :title="info.title" :visible.sync="info.show">
       <el-form :model="form">
-        <el-form-item label="分类名称" label-width="80px">
+        <el-form-item label="标题" label-width="80px">
           <el-input v-model="form.title" autocomplete="off"></el-input>
         </el-form-item>
-        <!-- https://jsonplaceholder.typicode.com/posts/ -->
         <el-form-item label="图片" label-width="80px" v-if="form.pid!==0">
           <el-upload
             class="avatar-uploader"
@@ -27,25 +26,108 @@
         <el-button type="primary" @click="update" v-else>修 改</el-button>
       </div>
     </el-dialog>
-</div>
+  </div>
 </template>
 <script>
+import { seccessAlert, warningAlert } from "../../../util/alert";
+import { bannerAdd, bannerInfo,bannerUpdate } from "../../../util/request";
+import { mapGetters, mapActions } from "vuex";
 export default {
-    props:['info'],
- components: {},
-data(){
-return {
-    imageUrl:'',
-    form:{
-        title:'',
-        img:null,
-        status:1
+  props: ["info"],
+  components: {},
+  data() {
+    return {
+      imageUrl: "",
+      form: {
+        title: "",
+        img: null,
+        status: 1
+      }
+    };
+  },
+  methods: {
+    ...mapActions({
+      requestList: "banner/requestList"
+    }),
+    // 清空
+    empty() {
+      this.form = {
+        title: "",
+        img: null,
+        status: 1
+      };
+      this.imageUrl = "";
+    },
+    // 取消
+    cancle() {
+      this.info.show = false;
+    },
+    // 修改图片
+    changeImg(e) {
+      // 上传图片不能超过2M
+      if (e.size > 2 * 1024 * 1024) {
+        warningAlert("上传图片不能超过2M");
+        return;
+      }
+      // 上传图片后缀必须是.png .jpg .gif .jpeg
+      let extname = e.name.slice(e.name.lastIndexOf("."));
+      let extArr = [".png", ".jpg", ".gif", ".jpeg"];
+      if (!extArr.some(item => item === extname)) {
+        warningAlert("上传的文件必须是图片");
+        return;
+      }
+      let file = e.raw;
+      this.imageUrl = URL.createObjectURL(file);
+      this.form.img = file;
+    },
+    // 添加
+    add() {
+      // 发起请求
+      bannerAdd(this.form).then(res => {
+        if (res.data.code == 200) {
+          seccessAlert("添加成功");
+          // 清空
+          this.empty();
+          // 取消
+          this.cancle();
+          // 重新获取轮播图列表数据
+          this.requestList();
+        } else {
+          warningAlert(res.data.msg);
+        }
+      });
+    },
+    // 获取轮播列表的一条信息
+    getInfo(id) {
+      // 发起请求
+      bannerInfo({id:id}).then(res=>{
+          if(res.data.code==200){
+              this.form=res.data.list;
+              this.imageUrl=this.$imgUrl+res.data.list.img;
+              this.form.id=id
+          }else{
+              warningAlert(res.data.msg)
+          }
+      })
+    },
+    // 修改
+    update() {
+        // 发起请求
+        bannerUpdate(this.form).then(res=>{
+                if(res.data.code==200){
+                    seccessAlert('修改成功');
+                    // 取消
+                    this.cancle();
+                    // 重新获取轮播列表
+                    this.requestList();
+                }else{
+                    warningAlert(res.data.msg)
+                }
+        })
     }
-}
-},
-methods: {},
-mounted(){}
-}
+  },
+  mounted() {}
+};
 </script>
 <style scoped lang='stylus'>
 .add>>> .el-upload {
