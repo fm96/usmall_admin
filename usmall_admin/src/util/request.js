@@ -1,15 +1,32 @@
 import axios from 'axios'
 import qs from 'qs'
+import store from '../store'
+import {warningAlert} from './alert'
+import router from '../router'
 
+// 请求拦截
+axios.interceptors.request.use(config=>{
+  if(config.url !=baseUrl + '/api/userlogin'){
+    config.headers.authorization=store.state.login.user.token;
+  }
+  return config
+})
 // 响应拦截
 axios.interceptors.response.use(res => {
   console.group('此次请求的地址是：' + res.config.url);
   console.log(res);
   console.groupEnd();
+  if(res.data.msg=='登录已过期或访问权限受限'){
+    warningAlert("登录已过期或访问权限受限")
+        router.push("/login");
+        return;
+  }
   return res;
 })
 
-const baseUrl = '/api';
+// const baseUrl = '/api';
+
+const baseUrl = '';
 
 // 菜单添加
 export const menuAdd = (params) => {

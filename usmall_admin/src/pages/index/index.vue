@@ -16,7 +16,7 @@
             <span slot="title">首页</span>
           </el-menu-item>
          <!--  系统设置 -->
-          <el-submenu index="2">
+          <!-- <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-s-tools"></i>
               <span>系统设置</span>
@@ -24,9 +24,9 @@
             <el-menu-item index="/menu">菜单管理</el-menu-item>
             <el-menu-item index="/role">角色管理</el-menu-item>
             <el-menu-item index="/admin">管理员管理</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
           <!-- 商城管理 -->
-          <el-submenu index="3">
+          <!-- <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-s-home"></i>
               <span>商城管理</span>
@@ -37,30 +37,31 @@
             <el-menu-item index="/member">会员管理</el-menu-item>
             <el-menu-item index="/banner">轮播图管理</el-menu-item>
             <el-menu-item index="/seckill">秒杀活动</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
 
           <!-- 混合目录 -->
-          <!-- <template v-for="item in user.menus" :index='item.id+""'>
-             <el-submenu v-if="hasChildren" :key="item.id">
-            <template slot="title">
-              <i :class="item.icon"></i>
-              <span>{{item.title}}</span>
-            </template>
-            <el-menu-item v-for="(i) in item.children" :key="i.title" :index="i.url">{{i.title}}</el-menu-item>
-          </el-submenu>
-          
-          <el-menu-item v-if="!hasChildren"  :index="item.url" :key="item.title">
-            <span slot="title">{{item.title}}</span>
-          </el-menu-item>
-          </template> -->
+         <template v-for="(item) in user.menus">
+            <el-submenu v-if="item.children" :index="item.id+''" :key="item.id">
+              <template slot="title">
+                <i :class="item.icon"></i>
+                <span>{{item.title}}</span>
+              </template>
+              <el-menu-item v-for="(i) in item.children" :key="i.title" :index="i.url">{{i.title}}</el-menu-item>
+            </el-submenu>
+
+            <el-menu-item v-if="!item.children" :key="item.id" :index="item.url">
+              <span slot="title">{{item.title}}</span>
+            </el-menu-item>
+
+          </template>
         </el-menu>
         <!-- 导航结束 -->
       </el-aside>
       <el-container>
         <el-header>
           <div class="right">
-            <span>{{user}}</span>
-            <el-button type="primary">退出</el-button>
+            <span>{{user.username}}</span>
+            <el-button type="primary" @click="exit">退出</el-button>
           </div>
         </el-header>
         <el-main>
@@ -90,7 +91,16 @@ export default {
     return {
     };
   },
-  methods: {},
+  methods: {
+    ...mapActions({
+      changeUser:'login/changeUser'
+    }),
+    // 退出
+    exit(){
+      this.changeUser(null);
+      this.$router.push('/login')
+    }
+  },
   mounted() {
   }
 };

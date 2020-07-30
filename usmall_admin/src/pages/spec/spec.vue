@@ -28,7 +28,9 @@ export default {
   methods: {
     //   添加
     add(){
-        this.info.show=true
+        this.info.show=true;
+        this.info.title = "添加商品规格";
+      this.info.isAdd = true;
     },
     // 修改数据
     update(id){

@@ -28,6 +28,8 @@ export default {
     // 添加
     add() {
       this.info.show = true;
+      this.info.title = "添加角色";
+      this.info.isAdd = true;
     },
     // 点击编辑，调用add的方法
     update(id) {

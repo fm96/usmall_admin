@@ -3,9 +3,9 @@
     <!-- 添加按钮 -->
     <el-button type="primary" @click="add">添 加</el-button>
     <!-- 添加弹框 -->
-    <v-add :info='info' ref="add"></v-add>
+    <v-add :info="info" ref="add"></v-add>
     <!-- 列表 -->
-    <v-list @update='update'></v-list>
+    <v-list @update="update"></v-list>
   </div>
 </template>
 <script>
@@ -18,25 +18,27 @@ export default {
   },
   data() {
     return {
-        info:{
-            show:false,
-            title:'轮播图添加',
-            isAdd:true
-        }
+      info: {
+        show: false,
+        title: "轮播图添加",
+        isAdd: true
+      }
     };
   },
   methods: {
     //添加
-    add(){
-        this.info.show=true
+    add() {
+      this.info.show = true;
+      this.info.title = "轮播图添加";
+      this.info.isAdd = true;
     },
     // 修改add.vue的数据，调用add.vue的方法
-    update(id){
-        this.info.show=true;
-        this.info.title='轮播图修改';
-        this.info.isAdd=false;
-        // 调用方法
-        this.$refs.add.getInfo(id)
+    update(id) {
+      this.info.show = true;
+      this.info.title = "轮播图修改";
+      this.info.isAdd = false;
+      // 调用方法
+      this.$refs.add.getInfo(id);
     }
   },
   mounted() {}

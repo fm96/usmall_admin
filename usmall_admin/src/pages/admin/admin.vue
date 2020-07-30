@@ -28,6 +28,8 @@ methods: {
     // 添加
     add(){
         this.info.show=true;
+        this.info.title = "管理员添加";
+      this.info.isAdd = true;
     },
     // 点击编辑修改add.vue的数据
     update(id){

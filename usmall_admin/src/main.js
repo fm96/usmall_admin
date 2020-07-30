@@ -28,7 +28,9 @@ import ElementUi from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUi)
 // 图片前缀
-Vue.prototype.$imgUrl="http://localhost:3000"
+// Vue.prototype.$imgUrl="http://localhost:3000"
+
+Vue.prototype.$imgUrl=""
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

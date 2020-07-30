@@ -209,6 +209,9 @@ export default {
     // 取消
     cancle() {
       this.info.show = false;
+      if(!this.info.isAdd){
+        this.empty();
+      }
     },
     // 添加
     add() {
@@ -259,6 +262,8 @@ export default {
       goodsUpdate(this.form).then(res=>{
         if(res.data.code==200){
           seccessAlert('修改成功');
+          // 清空
+          this.empty();
           // 取消
           this.cancle();
           // 重新获取列表

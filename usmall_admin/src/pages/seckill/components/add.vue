@@ -127,7 +127,10 @@ export default {
     },
     // 取消
     cancle(){
-      this.info.show=false
+      this.info.show=false;
+      if(!this.info.isAdd){
+        this.empty();
+      }
     },
     // 添加
     add() {
