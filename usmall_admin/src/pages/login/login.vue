@@ -13,6 +13,7 @@
 <script>
 import {adminLogin} from '../../util/request'
 import {seccessAlert,warningAlert} from '../../util/alert'
+import{mapGetters,mapActions} from 'vuex'
 export default {
   components: {},
   data() {
@@ -24,14 +25,19 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      changeUser:'login/changeUser'
+    }),
     login() {
       // this.$router.push("/");
       // 登录请求
       adminLogin(this.user).then(res=>{
         if(res.data.code==200){
           seccessAlert(res.data.msg);
-          this.$router.push("/");
-          localStorage.setItem('username', JSON.stringify(this.user.username));
+          // vuex保存了用户信息
+          this.changeUser(res.data.list);
+          // 跳转页面
+          this.$router.push('/home')
         }else{
           warningAlert(res.data.msg)
         }

@@ -15,7 +15,7 @@
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <!-- 系统设置 -->
+         <!--  系统设置 -->
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-s-tools"></i>
@@ -38,13 +38,28 @@
             <el-menu-item index="/banner">轮播图管理</el-menu-item>
             <el-menu-item index="/seckill">秒杀活动</el-menu-item>
           </el-submenu>
+
+          <!-- 混合目录 -->
+          <!-- <template v-for="item in user.menus" :index='item.id+""'>
+             <el-submenu v-if="hasChildren" :key="item.id">
+            <template slot="title">
+              <i :class="item.icon"></i>
+              <span>{{item.title}}</span>
+            </template>
+            <el-menu-item v-for="(i) in item.children" :key="i.title" :index="i.url">{{i.title}}</el-menu-item>
+          </el-submenu>
+          
+          <el-menu-item v-if="!hasChildren"  :index="item.url" :key="item.title">
+            <span slot="title">{{item.title}}</span>
+          </el-menu-item>
+          </template> -->
         </el-menu>
         <!-- 导航结束 -->
       </el-aside>
       <el-container>
         <el-header>
           <div class="right">
-            <span>{{username}}</span>
+            <span>{{user}}</span>
             <el-button type="primary">退出</el-button>
           </div>
         </el-header>
@@ -60,18 +75,23 @@
   </div>
 </template>
 <script>
+import {mapGetters,mapActions} from 'vuex'
 export default {
-  components: {},
+  computed: {
+    ...mapGetters({
+      user:'login/user'
+    }),
+    // 判断是否有目录
+    hasChildren(){
+      return this.user.menus[0].Children?true:false
+    }
+  },
   data() {
     return {
-      username:''
     };
   },
   methods: {},
   mounted() {
-    var username=JSON.parse(localStorage.getItem('username'));
-    this.username=username
-    // console.log(username)
   }
 };
 </script>

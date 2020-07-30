@@ -1,5 +1,5 @@
 import {
-    adminList,adminTotal
+  adminList,adminTotal
   } from '../../util/request'
   export const state = {
     list: [],
@@ -24,19 +24,21 @@ import {
   }
   
   export const actions = {     
-      // 角色列表
+      // 管理员列表
     resquestList(context) {
         const params={
           size:context.state.size,
           page:context.state.page
         };
-        if(!res.data.list&&context.state.page>1){
-          context.commit('changePage',context.state.page-1);
-          context.dispatch('resquestList');
-          return;
-        }
+        
         adminList(params).then(res => {
+          if(res.data.list==null&&context.state.page>1){
+            context.commit('changePage',context.state.page-1);
+            context.dispatch('resquestList');
+            return;
+          }
         context.commit('changeAdminList',res.data.list)
+        // console.log(res)
       })
     },
     // 管理员总数

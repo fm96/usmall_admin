@@ -3,9 +3,9 @@
     <!-- 添加按钮 -->
     <el-button type="primary" @click="add">添 加</el-button>
     <!-- 添加弹框 -->
-    <v-add :info='info'></v-add>
+    <v-add :info='info' ref="add"></v-add>
     <!-- 列表 -->
-    <!-- <v-list></v-list> -->
+    <v-list @update='update'></v-list>
 </div>
 </template>
 <script>
@@ -29,10 +29,18 @@ methods: {
     // 添加
     add(){
         this.info.show=true
+    },
+    // 编辑，修改数据，调用add.vue的getInfo方法
+    update(id){
+        this.info.show=true;
+        this.info.title='修改商品';
+        this.info.isAdd=false;
+        this.$refs.add.getInfo(id)
     }
 },
 mounted(){}
 }
 </script>
 <style scoped>
+
 </style>

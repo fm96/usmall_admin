@@ -3,7 +3,7 @@
     <el-dialog :title="info.title" :visible.sync="info.show" @opened="createEditor">
       <el-form :model="form">
         <el-form-item label="一级分类" label-width="80px">
-          <el-select v-model="sortId" placeholder="请选择" @change="changeFirstCateId()">
+          <el-select v-model="form.first_cateid" placeholder="请选择" @change="changeFirstCateId()">
             <!-- 动态数据 -->
             <el-option
               v-for="item in sortList"
@@ -45,7 +45,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="商品规格" label-width="80px">
-          <el-select v-model="goodsId" placeholder="请选择" @change="changeSpecsId()">
+          <el-select v-model="form.specsid" placeholder="请选择" @change="changeSpecsId()">
             <!-- 动态数据 -->
             <el-option
               v-for="item in specList"
@@ -87,7 +87,7 @@
 import E from "wangeditor";
 import { mapGetters, mapActions } from "vuex";
 import { seccessAlert, warningAlert } from "../../../util/alert";
-import {} from "../../../util/request";
+import { goodsAdd, goodsInfo,goodsUpdate } from "../../../util/request";
 export default {
   props: ["info"],
   computed: {
@@ -108,10 +108,6 @@ export default {
       secondArr: [],
       //   规格属性地址
       attrsArr: [],
-      //   一级分类id
-      sortId: "",
-      //   商品规格id
-      goodsId: "",
       form: {
         first_cateid: "",
         second_cateid: "",
@@ -133,7 +129,11 @@ export default {
       //   商品分类列表
       resquesSortList: "sort/resquestList",
       // 商品规格列表
-      resquesSpecList: "spec/resquestList"
+      resquesSpecList: "spec/resquestList",
+      // 商品列表
+      resquesGoodsList: "goods/requestList",
+      // 商品总数
+      resquesTotal:'goods/requestTotal'
     }),
     //   创建编辑器
     createEditor() {
@@ -162,7 +162,7 @@ export default {
     },
     // 点击一级分类内容，渲染对应的二级分类内容
     changeFirstCateId(bool) {
-      this.form.first_cateid = this.sortId;
+      // this.form.first_cateid = this.sortId;
       let index = this.sortList.findIndex(
         item => item.id == this.form.first_cateid
       );
@@ -174,19 +174,100 @@ export default {
     },
     // 点击商品规格，渲染对应的规格属性
     changeSpecsId(bool) {
-      this.form.specsid = this.goodsId;
+      // this.form.specsid = this.goodsId;
       let index = this.specList.findIndex(item => item.id == this.form.specsid);
       this.attrsArr = this.specList[index].attrs;
       if (!bool) {
         this.form.specsattr = [];
       }
     },
+    // 清空
+    empty() {
+      // 编辑器
+      (this.editor = this.editor.txt.html("")),
+        // 图片地址
+        (this.imageUrl = ""),
+        //   二级分类数组
+        (this.secondArr = []),
+        //   规格属性地址
+        (this.attrsArr = []),
+        (this.form = {
+          first_cateid: "",
+          second_cateid: "",
+          goodsname: "",
+          price: 0,
+          market_price: 0,
+          img: null,
+          description: "",
+          specsid: "",
+          specsattr: [],
+          isnew: 1,
+          ishot: 1,
+          status: 1
+        });
+    },
+    // 取消
+    cancle() {
+      this.info.show = false;
+    },
     // 添加
     add() {
-        console.log(this.form)
+      // 设置文本框内容
+      this.form.description = this.editor.txt.html();
+      // 规格属性转换成字符串
+      this.form.specsattr = JSON.stringify(this.form.specsattr);
+      // 发起请求
+      goodsAdd(this.form).then(res => {
+        if (res.data.code == 200) {
+          seccessAlert("添加成功");
+          // 清空
+          this.empty();
+          // 取消
+          this.cancle();
+          // 重新获取列表数据
+          this.resquesGoodsList();
+          // 获取列表总数
+          this.resquesTotal();
+        } else {
+          warningAlert(res.data.msg);
+        }
+      });
+    },
+    // 获取一条商品的信息
+    getInfo(id) {
+      // 发起请求
+      goodsInfo({ id: id }).then(res => {
+        if (res.data.code == 200) {
+          this.form = res.data.list;
+          // 图片地址
+          this.imageUrl = this.$imgUrl + res.data.list.img;
+          //根据一级分类计算出二级分类的数组
+          this.changeFirstCateId(true);
+          //根据商品规格计算出商品属性
+          this.changeSpecsId(true);
+          // 转换成数组
+          this.form.specsattr = JSON.parse(res.data.list.specsattr);
+          this.form.id = id;
+        } else {
+          warningAlert(res.data.msg);
+        }
+      });
     },
     // 修改
-    update() {}
+    update() {
+      // 发起请求
+      goodsUpdate(this.form).then(res=>{
+        if(res.data.code==200){
+          seccessAlert('修改成功');
+          // 取消
+          this.cancle();
+          // 重新获取列表
+          this.resquesGoodsList();
+        }else{
+          warningAlert(res.data.msg)
+        }
+      })
+    }
   },
   mounted() {
     //   商品列表
@@ -237,5 +318,11 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+#desc {
+  width: 100%;
+}
+.add >>> .w-e-toolbar {
+  /* overflow: hidden; */
 }
 </style>

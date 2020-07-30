@@ -405,7 +405,7 @@ export const seckillUpdate=(params)=>{
   return axios({
     url:baseUrl+'/api/seckedit',
     method:'post',
-    data:params
+    data:qs.stringify(params)
   })
 }
 // 限时秒杀删除

@@ -82,7 +82,9 @@ export default {
         "el-icon-delete-solid",
         "el-icon-s-tools",
         "el-icon-user-solid",
-        "el-icon-s-goods"
+        "el-icon-s-goods",
+        "el-icon-s-home",
+        "el-icon-menu"
       ],
       ads: [
         "/home",
@@ -94,7 +96,8 @@ export default {
         "/role",
         "/seckill",
         "/sort",
-        "/spec"
+        "/spec",
+        "/member"
       ]
     };
   },

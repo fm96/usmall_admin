@@ -14,6 +14,8 @@ import spec from './modules/spec'
 import member from './modules/member'
 import banner from './modules/banner'
 import seckill from './modules/seckill'
+import goods from './modules/goods'
+import login from './modules/login'
 
 
 // 创建一个仓库
@@ -30,6 +32,8 @@ export default new Vuex.Store({
         spec,
         member,
         banner,
-        seckill
+        seckill,
+        goods,
+        login
     }
 })

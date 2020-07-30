@@ -10,8 +10,8 @@
       </el-table-column>
       <el-table-column prop="address" label="操作">
           <template slot-scope="scope">
-              <el-button type="primary">编 辑</el-button>
-              <v-btn></v-btn>
+              <el-button type="primary" @click="update(scope.row.id)">编 辑</el-button>
+              <v-btn @comifirm="del(scope.row.id)"></v-btn>
           </template>
       </el-table-column>
     </el-table>
@@ -19,6 +19,8 @@
 </template>
 <script>
 import {mapGetters,mapActions} from 'vuex'
+import {seccessAlert,warningAlert} from '../../../util/alert'
+import {seckillDel} from '../../../util/request'
 export default {
   computed: {
       ...mapGetters({
@@ -31,7 +33,22 @@ export default {
   methods: {
       ...mapActions({
           requestList:'seckill/requestList'
-      })
+      }),
+      // 编辑，通知父组件修改信息
+      update(id){
+        this.$emit('update',id)
+      },
+      // 删除
+      del(id){
+        seckillDel({id:id}).then(res=>{
+          if(res.data.code==200){
+            seccessAlert('删除成功')
+            this.requestList()
+          }else{
+            warningAlert(res.data.msg)
+          }
+        })
+      }
   },
   mounted() {
       this.requestList()
